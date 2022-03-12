@@ -94,6 +94,18 @@ function cleanCart() {
 // Exercise 3
 function calculateTotal() {
     // Calculate total price of the cart using the "cartList" array
+
+    let product = {};
+    let productPrice = 0;
+    let totalPrice = 0;
+
+    for (var i = 0; i < cartList.length; i++) {
+        product = cartList[i]; 
+        
+        productPrice = product.price;
+        totalPrice += productPrice;
+    }
+    /* console.log(totalPrice); */
 }
 
 // Exercise 4

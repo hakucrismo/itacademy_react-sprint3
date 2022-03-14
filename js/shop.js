@@ -105,14 +105,49 @@ function calculateTotal() {
         productPrice = product.price;
         totalPrice += productPrice;
     }
-    /* console.log(totalPrice); */
+    return totalPrice;
 }
 
 // Exercise 4
 function generateCart() {
     // Using the "cartlist" array that contains all the items in the shopping cart, 
     // generate the "cart" array that does not contain repeated items, instead each item of this array "cart" shows the quantity of product.
-}
+
+    let product = {};
+    let productCart = {};
+    
+    for (let i = 0; i < cartList.length; i++){
+        product = cartList[i]; 
+
+        //Si no hay elementos en Cart
+        if (cart.length === 0) {
+            // Añadir el Producto + quantity
+            cart.push({
+                ...product,
+                quantity: 1
+            })
+        } else { // Si ya hay elementos, por cada Producto dentro de CartList
+            
+            for (let y = 0; y < cart.length; y++) { // Mirar si existe dentro de Cart
+                productCart = cart[y];
+                
+                if (productCart.id === product.id) {
+                    productCart.quantity++; // Solo aumentar quantity
+                } 
+                break;
+            }    
+                
+            if (productCart.id != product.id) { // Si no existe
+                // Añadir el Producto + quantity
+                cart.push({
+                    ...product,
+                    quantity: 1
+                })
+            } 
+        }
+    }
+}   
+
 
 // Exercise 5
 function applyPromotionsCart() {

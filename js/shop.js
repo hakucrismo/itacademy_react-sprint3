@@ -6,8 +6,8 @@ var products = [
         price: 10.5,
         type: 'grocery',
         offer: {
-            number: 3,
-            percent: 20
+            minimumProducts: 3,
+            discount: 0.5
         }
     },
     {
@@ -22,9 +22,9 @@ var products = [
         price: 5,
         type: 'grocery',
         offer: {
-            number: 10,
-            percent: 30
-        }
+            minimumProducts: 10,
+            discount: [2, 3]
+        } 
     },
     {
         id: 4,
@@ -133,8 +133,8 @@ function generateCart() {
                 
                 if (productCart.id === product.id) {
                     productCart.quantity++; // Solo aumentar quantity
+                    productCart["subtotal"] = productCart.price * productCart.quantity;
                 } 
-                break;
             }    
                 
             if (productCart.id != product.id) { // Si no existe
@@ -143,6 +143,7 @@ function generateCart() {
                     ...product,
                     quantity: 1
                 })
+                productCart["subtotal"] = productCart.price * productCart.quantity;
             } 
         }
     }
@@ -152,6 +153,34 @@ function generateCart() {
 // Exercise 5
 function applyPromotionsCart() {
     // Apply promotions to each item in the array "cart"
+
+    //Si l'usuari compra 3 o més ampolles d'oli, el preu del producte descendeix a 10 euros.
+    //En comprar-se 10 o més mescles per a fer pastís, el seu preu es rebaixa a 2/3.
+    for (let i = 0; i < cart.length; i++){
+        let productCart = cart[i]; 
+        let productName = productCart.name;
+        let productQuantity = productCart.quantity;
+        
+        if (productName === 'cooking oil' && productQuantity >= productCart.offer.minimumProducts) {
+            let priceWithDiscount = 0;
+
+            productCart["subtotalWithDiscount"] = 0;
+            priceWithDiscount = productCart.price - productCart.offer.discount;
+            productCart.subtotalWithDiscount = priceWithDiscount * productQuantity;
+        }
+    
+        if (productName === 'Instant cupcake mixture' && productQuantity >= productCart.offer.minimumProducts) {
+            let priceWithDiscount = 0;
+
+            productCart["subtotalWithDiscount"] = 0;
+            priceWithDiscount = productCart.price - (productCart.price - dosTercios());
+            productCart.subtotalWithDiscount = priceWithDiscount * productQuantity;
+
+            function dosTercios() {
+                return productCart.price / productCart.offer.discount[1] * productCart.offer.discount[0];
+            }
+        }
+    }
 }
 
 
